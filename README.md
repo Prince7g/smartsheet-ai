@@ -7,7 +7,7 @@
 ## 🚀 Live Demo
 
 📍 https://smartsheet-ai.vercel.app/
-📦 GitHub: [github.com/PrinceRaj8/smart-sheet-ai](https://github.com/PrinceRaj8/smart-sheet-ai)
+📦 GitHub: [https://github.com/Prince7g/smartsheet-ai]
 
 ---
 
