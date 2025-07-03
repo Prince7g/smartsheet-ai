@@ -6,7 +6,7 @@
 
 ## 🚀 Live Demo
 
-📍 [View on Vercel](https://your-vercel-link.vercel.app/)  
+📍 https://smartsheet-ai.vercel.app/
 📦 GitHub: [github.com/PrinceRaj8/smart-sheet-ai](https://github.com/PrinceRaj8/smart-sheet-ai)
 
 ---
