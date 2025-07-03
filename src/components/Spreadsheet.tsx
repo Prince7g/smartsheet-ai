@@ -119,11 +119,15 @@ const Spreadsheet = () => {
     setAiFill([]);
   };
 
+  // 🧠 Only enable arrow nav when NOT editing
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  });
+    if (!editingCell) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [editingCell]);
 
+  // 🔍 Search filtering
   useEffect(() => {
     const q = searchQuery.toLowerCase().trim();
     if (q === '') {
@@ -170,15 +174,15 @@ const Spreadsheet = () => {
         />
         <button
           onClick={() => setSearchQuery('')}
-          className="text-sm bg-gray-200 px-2 py-1 rounded"
+          className="text-sm bg-gray-200 px-3 py-1 rounded active:scale-95 transition cursor-pointer"
         >
-          Reset
+          🔄 Reset
         </button>
       </div>
 
       {aiFill.length > 0 && (
         <button
-          className="text-xs px-2 py-1 mb-2 bg-blue-500 text-white rounded"
+          className="text-xs px-2 py-1 mb-2 bg-blue-500 text-white rounded active:scale-95 transition"
           onClick={acceptAIFill}
         >
           ✅ Accept AI Suggestions
