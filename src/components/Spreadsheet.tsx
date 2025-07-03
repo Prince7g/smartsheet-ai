@@ -119,7 +119,30 @@ const Spreadsheet = () => {
     setAiFill([]);
   };
 
-  // 🧠 Only enable arrow nav when NOT editing
+  const handleAddRow = () => {
+    const newRow = {
+      id: data.length + 1,
+      name: '',
+      status: '',
+      amount: 0,
+    };
+    const updated = [...data, newRow];
+    setData(updated);
+    setFilteredData(updated);
+    setActiveCell({ row: updated.length - 1, col: 0 });
+
+    setTimeout(() => {
+      const newCell = document.getElementById(`cell-${updated.length - 1}-0`);
+      if (newCell) newCell.scrollIntoView({ behavior: 'smooth' });
+    }, 50);
+  };
+
+  const handleDeleteRow = (rowIndex: number) => {
+    const updated = data.filter((_, i) => i !== rowIndex);
+    setData(updated);
+    setFilteredData(updated);
+  };
+
   useEffect(() => {
     if (!editingCell) {
       window.addEventListener('keydown', handleKeyDown);
@@ -127,7 +150,6 @@ const Spreadsheet = () => {
     }
   }, [editingCell]);
 
-  // 🔍 Search filtering
   useEffect(() => {
     const q = searchQuery.toLowerCase().trim();
     if (q === '') {
@@ -159,11 +181,7 @@ const Spreadsheet = () => {
   }, [searchQuery, data]);
 
   return (
-    <div
-      className="relative p-4 overflow-auto"
-      onClick={closePopup}
-      tabIndex={0}
-    >
+    <div className="relative p-4 overflow-auto" onClick={closePopup} tabIndex={0}>
       <div className="mb-3 flex items-center gap-2">
         <input
           type="text"
@@ -189,21 +207,16 @@ const Spreadsheet = () => {
         </button>
       )}
 
-      <table
-        {...getTableProps()}
-        className="min-w-full border border-gray-300 bg-white rounded"
-      >
+      <table {...getTableProps()} className="min-w-full border border-gray-300 bg-white rounded">
         <thead>
           {headerGroups.map((group) => (
             <tr {...group.getHeaderGroupProps()} className="bg-gray-100 text-sm">
               {group.headers.map((col) => (
-                <th
-                  {...col.getHeaderProps()}
-                  className="px-4 py-2 border-b font-semibold text-left"
-                >
+                <th {...col.getHeaderProps()} className="px-4 py-2 border-b font-semibold text-left">
                   {col.render('Header')}
                 </th>
               ))}
+              <th className="px-4 py-2 border-b text-sm font-semibold">Action</th>
             </tr>
           ))}
         </thead>
@@ -249,6 +262,14 @@ const Spreadsheet = () => {
                     </td>
                   );
                 })}
+                <td className="border-b px-2 text-center">
+                  <button
+                    onClick={() => handleDeleteRow(rowIndex)}
+                    className="text-red-500 text-xs hover:underline"
+                  >
+                    🗑️
+                  </button>
+                </td>
               </tr>
             );
           })}
@@ -264,6 +285,14 @@ const Spreadsheet = () => {
           <p>{aiPopup.message}</p>
         </div>
       )}
+
+      {/* Floating Add Button */}
+      <button
+        onClick={handleAddRow}
+        className="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-full shadow-lg active:scale-95 transition"
+      >
+        ➕ Add Row
+      </button>
     </div>
   );
 };
